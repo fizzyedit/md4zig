@@ -102,7 +102,7 @@ const md4c_flag_t = packed struct(u32) {
 
 fn promoteTo(comptime T: type, ptr: ?*anyopaque) ?T {
     const p = ptr orelse return null;
-    const t_ptr: *T = @alignCast(@ptrCast(p));
+    const t_ptr: *T = @ptrCast(@alignCast(p));
     return t_ptr.*;
 }
 
@@ -361,11 +361,11 @@ pub fn MD4CParser(comptime Implementation: type) type {
             block_type: c.MD_BLOCKTYPE,
             details: ?*anyopaque,
             data: ?*anyopaque,
-        ) callconv(.C) c_int {
+        ) callconv(.c) c_int {
             const _field_name = "enterBlock";
             if (@hasDecl(Implementation, _field_name)) {
                 const block = BlockInfo.init_c(block_type, details);
-                const impl: *Implementation = @alignCast(@ptrCast(data.?));
+                const impl: *Implementation = @ptrCast(@alignCast(data.?));
                 @field(Implementation, _field_name)(
                     impl,
                     block,
@@ -378,11 +378,11 @@ pub fn MD4CParser(comptime Implementation: type) type {
             block_type: c.MD_BLOCKTYPE,
             details: ?*anyopaque,
             data: ?*anyopaque,
-        ) callconv(.C) c_int {
+        ) callconv(.c) c_int {
             const _field_name = "leaveBlock";
             if (@hasDecl(Implementation, _field_name)) {
                 const block = BlockInfo.init_c(block_type, details);
-                const impl: *Implementation = @alignCast(@ptrCast(data.?));
+                const impl: *Implementation = @ptrCast(@alignCast(data.?));
                 @field(Implementation, _field_name)(
                     impl,
                     block,
@@ -395,11 +395,11 @@ pub fn MD4CParser(comptime Implementation: type) type {
             span_type: c.MD_SPANTYPE,
             details: ?*anyopaque,
             data: ?*anyopaque,
-        ) callconv(.C) c_int {
+        ) callconv(.c) c_int {
             const _field_name = "enterSpan";
             if (@hasDecl(Implementation, _field_name)) {
                 const span = SpanInfo.init_c(span_type, details);
-                const impl: *Implementation = @alignCast(@ptrCast(data.?));
+                const impl: *Implementation = @ptrCast(@alignCast(data.?));
                 @field(Implementation, _field_name)(
                     impl,
                     span,
@@ -412,11 +412,11 @@ pub fn MD4CParser(comptime Implementation: type) type {
             span_type: c.MD_SPANTYPE,
             details: ?*anyopaque,
             data: ?*anyopaque,
-        ) callconv(.C) c_int {
+        ) callconv(.c) c_int {
             const _field_name = "leaveSpan";
             if (@hasDecl(Implementation, _field_name)) {
                 const span = SpanInfo.init_c(span_type, details);
-                const impl: *Implementation = @alignCast(@ptrCast(data.?));
+                const impl: *Implementation = @ptrCast(@alignCast(data.?));
                 @field(Implementation, _field_name)(
                     impl,
                     span,
@@ -430,10 +430,10 @@ pub fn MD4CParser(comptime Implementation: type) type {
             ptr: [*c]const c.MD_CHAR,
             len: c.MD_SIZE,
             data: ?*anyopaque,
-        ) callconv(.C) c_int {
+        ) callconv(.c) c_int {
             const _field_name = "textCallback";
             if (@hasDecl(Implementation, _field_name)) {
-                const impl: *Implementation = @alignCast(@ptrCast(data.?));
+                const impl: *Implementation = @ptrCast(@alignCast(data.?));
                 @field(Implementation, _field_name)(impl, Text{
                     .text = ptr[0..len],
                     .text_type = @as(TextType, @enumFromInt(t)),
@@ -444,7 +444,7 @@ pub fn MD4CParser(comptime Implementation: type) type {
 
         fn promoteSelf(ptr: ?*anyopaque) *Self {
             const p = ptr.?;
-            return @alignCast(@ptrCast(p));
+            return @ptrCast(@alignCast(p));
         }
 
         /// Initialize a parser.
@@ -469,7 +469,7 @@ pub fn MD4CParser(comptime Implementation: type) type {
                 text.ptr,
                 @intCast(text.len),
                 &p.c_parser,
-                @alignCast(@ptrCast(impl)),
+                @ptrCast(@alignCast(impl)),
             );
 
             switch (errno) {

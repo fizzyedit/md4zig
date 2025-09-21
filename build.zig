@@ -15,15 +15,14 @@ pub fn build(b: *std.Build) void {
     const mod = b.addModule("md4zig", .{
         .root_source_file = b.path("src/main.zig"),
         .link_libc = true,
-    });
-    mod.linkLibrary(md4c);
-
-    const lib = b.addSharedLibrary(.{
-        .name = "md4zig",
-        .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
     });
+    mod.linkLibrary(md4c);
+
+    const lib = b.addLibrary(
+        .{ .name = "md4zig", .root_module = mod, .linkage = .dynamic },
+    );
 
     lib.linkLibC();
     lib.linkLibrary(md4c);
@@ -31,9 +30,7 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(lib);
 
     const lib_unit_tests = b.addTest(.{
-        .root_source_file = b.path("src/main.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = mod,
     });
 
     lib_unit_tests.linkLibC();

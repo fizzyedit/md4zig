@@ -4,8 +4,8 @@
     .version = "0.0.2",
     .dependencies = .{
         .md4c = .{
-            .url = "https://github.com/fjebaker/md4c-zig/archive/master.tar.gz",
-            .hash = "N-V-__8AACQ2EACkO9xfiZaHghqNHogsdSPx_HbxMvFVoUl7",
+            .url = "git+https://github.com/fjebaker/md4c-zig/#07ee4687ae0081c565ded4c8ba3d5e13981f9c57",
+            .hash = "N-V-__8AABg2EADw60l3NWKs8RaAXr8TwCv5PRejslRuv3XD",
         },
     },
     .paths = .{""},
