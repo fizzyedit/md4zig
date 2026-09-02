@@ -1,12 +1,19 @@
 .{
     .name = .md4zig,
-    .fingerprint = 0x28dccacf6d46d665,
-    .version = "0.0.2",
-    .dependencies = .{
-        .md4c = .{
-            .url = "git+https://github.com/fjebaker/md4c-zig/#07ee4687ae0081c565ded4c8ba3d5e13981f9c57",
-            .hash = "N-V-__8AABg2EADw60l3NWKs8RaAXr8TwCv5PRejslRuv3XD",
-        },
+    .fingerprint = 0x28dccacf8fad268a,
+    .version = "0.1.0",
+    .minimum_zig_version = "0.16.0",
+    // md4c is vendored under `vendor/md4c` rather than pulled as a package: the
+    // freestanding-wasm build compiles it with our own shim headers and without
+    // libc, which a prebuilt upstream artifact can't offer.
+    .dependencies = .{},
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "include",
+        "src",
+        "vendor",
+        "LICENSE",
+        "README.md",
     },
-    .paths = .{""},
 }
