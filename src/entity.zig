@@ -5,9 +5,7 @@
 
 const std = @import("std");
 
-const c = @cImport({
-    @cInclude("entity.h");
-});
+const c = @import("c");
 
 /// Longest UTF-8 an entity can decode to: two code points of 4 bytes each.
 pub const max_decoded_len = 8;

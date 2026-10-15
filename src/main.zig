@@ -1,9 +1,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-const c = @cImport({
-    @cInclude("md4c.h");
-});
+const c = @import("c");
 
 comptime {
     // Freestanding wasm links no libc; `libc.zig` exports the subset md4c needs.

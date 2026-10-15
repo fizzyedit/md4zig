@@ -2,7 +2,7 @@
     .name = .md4zig,
     .fingerprint = 0x28dccacf8fad268a,
     .version = "0.1.0",
-    .minimum_zig_version = "0.16.0",
+    .minimum_zig_version = "0.17.0",
     // md4c is vendored under `vendor/md4c` rather than pulled as a package: the
     // freestanding-wasm build compiles it with our own shim headers and without
     // libc, which a prebuilt upstream artifact can't offer.

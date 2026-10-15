@@ -33,6 +33,17 @@ fn isFreestandingWasm(target: std.Build.ResolvedTarget) bool {
 fn attachMd4c(b: *std.Build, mod: *std.Build.Module, target: std.Build.ResolvedTarget) void {
     mod.addIncludePath(b.path("vendor/md4c"));
     if (isFreestandingWasm(target)) mod.addIncludePath(b.path("include/freestanding"));
+    // md4c's headers, translated once into a module of their own (`c`): Zig 0.17 removed
+    // `@cImport`.
+    const tc = b.addTranslateC(.{
+        .root_source_file = b.path("include/md4zig_c.h"),
+        .target = target,
+        .optimize = mod.optimize orelse .debug,
+        .link_libc = !isFreestandingWasm(target),
+    });
+    tc.addIncludePath(b.path("vendor/md4c"));
+    if (isFreestandingWasm(target)) tc.addIncludePath(b.path("include/freestanding"));
+    mod.addImport("c", tc.createModule());
     mod.addCSourceFiles(.{
         .root = b.path("vendor/md4c"),
         // entity.c is md4c's HTML5 entity table. md4c itself does not use it —
@@ -52,7 +63,7 @@ fn addWasmCheck(b: *std.Build) void {
     const mod = b.createModule(.{
         .root_source_file = b.path("src/wasm_check.zig"),
         .target = target,
-        .optimize = .ReleaseSmall,
+        .optimize = .small,
         .link_libc = false,
         .single_threaded = true,
     });
